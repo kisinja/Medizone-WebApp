@@ -15,7 +15,7 @@ const port = process.env.PORT || 9000;
 // middleware
 app.use(express.json());
 app.use(cors({
-    origins: ["https://medizoneclient.onrender.com", "http://localhost:5001", "http://localhost:5000"],
+    origins: ["https://medizoneclient.onrender.com", "http://localhost:5001", "http://localhost:5000", "https://medizoneadmin.onrender.com"],
 }));
 app.use(morgan('common'));
 app.use(bodyParser.json());
