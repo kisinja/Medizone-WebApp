@@ -52,7 +52,7 @@ export const lipaNaMpesa = async (req, res) => {
                 Password: password,
                 Timestamp: timestamp,
                 TransactionType: "CustomerPayBillOnline",
-                Amount: amount,
+                Amount: 1,
                 PartyA: phone,
                 PartyB: "174379",
                 PhoneNumber: phone,
