@@ -149,13 +149,13 @@ const MyAppointments = () => {
                                 {item.cancelled && <button className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500">Appointment cancelled</button>}
                                 {!item.cancelled && (
                                     <button
-                                        className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-green-600 hover:text-white transition-all duration-300"
+                                        className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300"
                                         onClick={() => {
                                             setSelectedAppointment(item);
                                             setShowModal(true);
                                         }}
                                     >
-                                        Pay with MPESA
+                                        <img src="https://res.cloudinary.com/dzrdfpulv/image/upload/v1733582690/mpesa-logo_ypj2ty.png" alt="Lipa na Mpesa logo" className="w-full object-cover h-[25px]" />
                                     </button>
                                 )}
                             </div>
@@ -168,7 +168,7 @@ const MyAppointments = () => {
             {showModal && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded-lg w-1/3">
-                        <h3 className="text-lg font-semibold">Enter Your Phone Number</h3>
+                        <h3 className="text-lg font-semibold">Enter Your MPESA Phone Number e.g(254700000000)</h3>
                         <input
                             type="text"
                             className="w-full mt-4 p-2 border border-gray-300 rounded-md"
@@ -178,7 +178,7 @@ const MyAppointments = () => {
                         />
                         <div className="flex justify-end gap-4 mt-4">
                             <button
-                                className="bg-red-500 text-white py-2 px-4 rounded-md"
+                                className="bg-green-700 text-white py-2 px-4 rounded-md"
                                 onClick={() => setShowModal(false)}
                             >
                                 Close
