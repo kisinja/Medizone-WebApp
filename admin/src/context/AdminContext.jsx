@@ -11,6 +11,7 @@ export const AdminContextProvider = ({ children }) => {
     );
     const [doctors, setDoctors] = useState();
     const [loading, setLoading] = useState(false);
+    const [appointmentsLoading, setAppointmentsLoading] = useState(true);
     const [appointments, setAppointments] = useState([]);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -75,6 +76,8 @@ export const AdminContextProvider = ({ children }) => {
         } catch (error) {
             console.log(error.message);
             toast.error(error.message);
+        } finally {
+            setAppointmentsLoading(false);
         }
     };
 
@@ -88,7 +91,8 @@ export const AdminContextProvider = ({ children }) => {
         changeAvailability,
         appointments,
         getAllAppointments,
-        setAppointments
+        setAppointments,
+        appointmentsLoading
     };
 
     return (

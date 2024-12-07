@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
-import { assets } from '../assets/assets_admin/assets';
 import { AdminContext } from '../context/AdminContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loader from '../components/Loader';
 
 const Login = () => {
 
@@ -12,8 +12,10 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const onSubmitHandler = async (e) => {
+        setLoading(true);
         e.preventDefault();
 
         try {
@@ -30,12 +32,18 @@ const Login = () => {
                     toast.error(data.message);
                 }
             } else {
-
+                alert('Doctor Login Coming soon!!!');
             }
         } catch (error) {
             console.log(error.message);
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loading) {
+        return <Loader text="Signing in please wait..." />
+    }
 
     return (
         <form className='min-h-[80vh] flex items-center' onSubmit={onSubmitHandler}>

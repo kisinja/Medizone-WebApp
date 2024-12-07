@@ -3,9 +3,10 @@ import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
 import icon from '../../assets/assets_admin/cancel_icon.svg';
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
 
 const AllAppointments = () => {
-    const { aToken, appointments, getAllAppointments } = useContext(AdminContext);
+    const { aToken, appointments, getAllAppointments, appointmentsLoading } = useContext(AdminContext);
     const { calculateAge, slotDateFormat, currencySymbol } = useContext(AppContext);
 
     useEffect(() => {
@@ -13,6 +14,10 @@ const AllAppointments = () => {
             getAllAppointments();
         }
     }, [aToken, getAllAppointments]);
+
+    if (appointmentsLoading) {
+        return <Loader text="Fetching Appointments..." />
+    }
 
     return (
         <div className="w-full max-w-6xl m-5">
