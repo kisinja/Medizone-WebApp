@@ -2,11 +2,10 @@ import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
 import icon from '../../assets/assets_admin/cancel_icon.svg';
-import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
 const AllAppointments = () => {
-    const { aToken, appointments, getAllAppointments, appointmentsLoading } = useContext(AdminContext);
+    const { aToken, appointments, getAllAppointments, appointmentsLoading, cancelAppointment, cancelLoading } = useContext(AdminContext);
     const { calculateAge, slotDateFormat, currencySymbol } = useContext(AppContext);
 
     useEffect(() => {
@@ -17,6 +16,8 @@ const AllAppointments = () => {
 
     if (appointmentsLoading) {
         return <Loader text="Fetching Appointments..." />
+    } else if (cancelLoading) {
+        return <Loader text="Cancelling Appointment..." />
     }
 
     return (
@@ -76,7 +77,7 @@ const AllAppointments = () => {
                                     src={icon}
                                     className="w-10 cursor-pointer"
                                     alt="Cancel Icon"
-                                    onClick={() => toast.success("Appointment cancelled!!")} // Add appropriate handler here
+                                    onClick={() => cancelAppointment(item._id)}
                                 />
                             )}
                         </div>

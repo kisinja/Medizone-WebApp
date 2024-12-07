@@ -110,4 +110,37 @@ const appointmentsAdmin = async (req, res) => {
     }
 };
 
-export { addDoctor, loginAdmin, getAllDoctors, appointmentsAdmin };
+const cancelAppointment = async (req, res) => {
+    const { appointmentId } = req.body;
+
+    try {
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(400).json({ message: "Appointment not found!!", success: false });
+        } else if (appointment.cancelled) {
+            return res.status(400).json({ message: "Appointment already cancelled!!", success: false });
+        }
+
+        await Appointment.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        // remove appointment from doctor's slotsBooked
+        const { docId, slotDate, slotTime } = appointment;
+        const docData = await Doctor.findById(docId);
+
+        let slotsBooked = docData.slotsBooked;
+
+        slotsBooked[slotDate] = slotsBooked[slotDate].filter(e => e !== slotTime);
+
+        await Doctor.findByIdAndUpdate(docId, { slotsBooked });
+
+        res.json({
+            success: true,
+            message: "Appointment cancelled successfully",
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: error.message, success: false });
+    }
+};
+
+export { addDoctor, loginAdmin, getAllDoctors, appointmentsAdmin, cancelAppointment };
