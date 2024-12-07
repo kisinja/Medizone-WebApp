@@ -58,10 +58,6 @@ const AddDoctor = () => {
             formData.append('address', JSON.stringify({ line1: address1, line2: address2 }));
             formData.append('image', docImg);
 
-            /* formData.forEach((value, key) => {
-                console.log(`${key} : ${value}`);
-            }); */
-
             const { data } = await axios.post(`${backendUrl}/api/admin/add-doctor`, formData, {
                 headers: {
                     'Authorization': `Bearer ${aToken}`
@@ -127,21 +123,20 @@ const AddDoctor = () => {
                     )}
                 </div>
 
-
                 <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
                     <div className="w-full lg:flex-1 flex flex-col gap-4">
                         <div className="flex-1 flex-col gap-1">
                             <p>Doctor{"'"}s Name</p>
-                            <input type="text" placeholder="Name" id="" required className="border rounded px-3 py-2" onChange={(e) => setName(e.target.value)} value={name} />
+                            <input type="text" placeholder="Name" id="" required className="border rounded px-3 py-2 w-full" onChange={(e) => setName(e.target.value)} value={name} />
                         </div>
                         <div className="flex-1 flex-col gap-1">
                             <p>Doctor&apos;s Email</p>
-                            <input type="email" placeholder="Email" id="" required className="border rounded px-3 py-2" onChange={(e) => setEmail(e.target.value)} value={email} />
+                            <input type="email" placeholder="Email" id="" required className="border rounded px-3 py-2 w-full" onChange={(e) => setEmail(e.target.value)} value={email} />
                         </div>
 
                         <div className="flex-1 flex-col gap-1">
                             <p>Doctor&apos; Password</p>
-                            <input type="password" placeholder="Password" id="" required className="border rounded px-3 py-2" onChange={(e) => setPassword(e.target.value)} value={password} />
+                            <input type="password" placeholder="Password" id="" required className="border rounded px-3 py-2 w-full" onChange={(e) => setPassword(e.target.value)} value={password} />
                         </div>
 
                         <div className="flex-1 flex-col gap-1">
@@ -162,9 +157,8 @@ const AddDoctor = () => {
 
                         <div className="flex-1 flex-col gap-1">
                             <p>Fee</p>
-                            <input type="Number" placeholder="Fee" min={0} id="" required className="border rounded px-3 py-2" onChange={(e) => setFee(e.target.value)} value={fee} />
+                            <input type="Number" placeholder="Fee" min={0} id="" required className="border rounded px-3 py-2 w-full" onChange={(e) => setFee(e.target.value)} value={fee} />
                         </div>
-
                     </div>
 
                     <div className="w-full lg:flex-1 flex flex-col gap-2">
@@ -186,16 +180,14 @@ const AddDoctor = () => {
 
                         <div className="flex-1 flex-col gap-1">
                             <p>Education</p>
-                            <input type="text" placeholder="Degree" className="border rounded px-3 py-2" id="" required onChange={(e) => setDegree(e.target.value)} value={degree} />
+                            <input type="text" placeholder="Degree" className="border rounded px-3 py-2 w-full" id="" required onChange={(e) => setDegree(e.target.value)} value={degree} />
                         </div>
 
                         <div className="flex-1 flex-col gap-1">
                             <p>Address</p>
-                            <input type="text" placeholder="Address 1" id="" required className="border rounded px-3 py-2" onChange={(e) => setAddress1(e.target.value)} value={address1} />
-                            <input type="text" placeholder="Address 2" id="" required className="border rounded px-3 py-2 mt-2" onChange={(e) => setAddress2(e.target.value)} value={address2} />
+                            <input type="text" placeholder="Address 1" id="" required className="border rounded px-3 py-2 w-full" onChange={(e) => setAddress1(e.target.value)} value={address1} />
+                            <input type="text" placeholder="Address 2" id="" required className="border rounded px-3 py-2 mt-2 w-full" onChange={(e) => setAddress2(e.target.value)} value={address2} />
                         </div>
-
-
                     </div>
                 </div>
 
