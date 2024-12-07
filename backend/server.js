@@ -24,12 +24,16 @@ import adminRouter from './routes/admin.js';
 import doctorRouter from './routes/doctor.js';
 import userRouter from './routes/user.js';
 import mpesaRouter from './routes/mpesa.js';
+import blogRouter from './routes/blogs.js';
+import commentsRouter from './routes/comments.js';
 
 // api endpoints
 app.use('/api/admin', adminRouter);
 app.use('/api/doctor', doctorRouter);
 app.use('/api/user', userRouter);
 app.use('/api/mpesa', mpesaRouter);
+app.use('/api/blogs', blogRouter);
+app.use('/api/comments', commentsRouter);
 
 // db config
 connectDB();

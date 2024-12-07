@@ -14,13 +14,13 @@ const TopDoctors = () => {
     }
 
     return (
-        <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
+        <section className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
             <h1 className="text-3xl font-medium">Top Doctors to Book</h1>
-            <p className="sm:w-1/3 text-center text-sm">Simply browse through our extensive list of trusted doctors</p>
+            <p className="sm:w-1/3 text-center text-sm text-gray-500">Simply browse through our extensive list of trusted doctors</p>
 
             {
                 doctors.length === 0 ? (
-                    <div className="text-center flex justify-center items-center text-lg text-gray-500 mt-3 bg-gray-100 rounded-lg shadow p-4">
+                    <div className="text-center flex justify-center items-center text-lg text-gray-400 mt-3 bg-gray-100 rounded-lg shadow py-6 px-12">
                         Top Doctors not available at the moment!!
                     </div>
                 ) : (
@@ -44,9 +44,9 @@ const TopDoctors = () => {
                 )
             }
 
-            <button className="bg-blue-50 text-gray-600 px-12 py-3 rounded-full mt-10" onClick={() => { navigate('/doctors'); scrollTo(0, 0) }}>More</button>
-        </div >
-    )
-}
+            <button className="bg-blue-50 text-gray-600 px-12 py-3 rounded-full mt-10 hover:shadow focus:scale-[.9] transition-transform duration-100" onClick={() => { navigate('/doctors'); scrollTo(0, 0) }}>More</button>
+        </section>
+    );
+};
 
-export default TopDoctors
+export default TopDoctors;

@@ -17,11 +17,11 @@ const Navbar = () => {
     const logout = () => {
         setToken(false);
         localStorage.removeItem('token');
-        toast.info('Logged out successfully!!');
+        toast.info('Logged out!!');
     };
 
     return (
-        <div className="flex-container text-sm py-4 mb-5 border-b border-b-gray-400 ">
+        <nav className="flex-container text-sm py-4 mb-5 border-b border-b-gray-400">
             <div className="font-bold text-xl flex items-center gap-1 cursor-pointer" onClick={() => navigate('/')}>
                 <div className="w-12 h-12 rounded-full bg-primary"></div>
                 <span>Medizone</span>
@@ -116,7 +116,7 @@ const Navbar = () => {
                     </ul>
                 </div>
             </div>
-        </div >
+        </nav >
     )
 }
 

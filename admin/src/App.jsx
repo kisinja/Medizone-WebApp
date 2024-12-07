@@ -12,18 +12,16 @@ import AddDoctor from "./pages/admin/AddDoctor";
 import DoctorsList from "./pages/admin/DoctorsList";
 import './App.css';
 
-
 const App = () => {
 
   const { aToken } = useContext(AdminContext);
 
   return aToken ? (
-    <div className="bg-[#F8F9FD]">
+    <main className="bg-[#F8F9FD]">
       <ToastContainer />
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
-
         <Routes>
           <Route path="/" element={<></>} />
           <Route path="/admin-dashboard" element={<Dashboard />} />
@@ -32,7 +30,7 @@ const App = () => {
           <Route path="/doctor-list" element={<DoctorsList />} />
         </Routes>
       </div>
-    </div>
+    </main>
   ) : (
     <>
       <Login />
