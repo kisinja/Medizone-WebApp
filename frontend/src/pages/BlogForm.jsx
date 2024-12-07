@@ -47,8 +47,11 @@ const BlogForm = () => {
         const formDataToSend = new FormData();
         formDataToSend.append("title", formData.title);
         formDataToSend.append("content", formData.content);
-        formDataToSend.append("tags", formData.tags);
         formDataToSend.append("published", formData.published);
+
+        // Convert tags string into an array
+        const tagsArray = formData.tags.split(",").map((tag) => tag.trim());
+        formDataToSend.append("tags", JSON.stringify(tagsArray)); // Send as a JSON string if backend expects JSON
 
         uploadedImages.forEach((image) => {
             formDataToSend.append("imageUrls", image);
@@ -61,16 +64,15 @@ const BlogForm = () => {
                     "Authorization": `Bearer ${token}`,
                 },
             });
-            console.log(data);
-
             if (data.success) {
-                toast.success("Blog created successfully!");
+                toast.success("Blog created successfully");
                 setFormData({
                     title: "",
                     content: "",
                     tags: "",
                     published: false,
                 });
+                setUploadedImages([]);
             } else {
                 toast.error(data.message);
             }
@@ -81,6 +83,7 @@ const BlogForm = () => {
             setIsSubmitting(false);
         }
     };
+
 
     if (isSubmitting) {
         return <Loader text="Publishing Blog..." />
