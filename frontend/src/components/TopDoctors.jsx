@@ -20,7 +20,7 @@ const TopDoctors = () => {
 
             {
                 doctors.length === 0 ? (
-                    <div className="text-center flex justify-center items-center text-lg text-gray-500">
+                    <div className="text-center flex justify-center items-center text-lg text-gray-500 mt-3 bg-gray-100 rounded-lg shadow">
                         Top Doctors not available at the moment!!
                     </div>
                 ) : (
