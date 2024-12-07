@@ -22,7 +22,7 @@ const AllAppointments = () => {
 
     return (
         <div className="w-full max-w-6xl m-5">
-            <p className="mb-3 text-lg font-medium">All Appointments</p>
+            <p className="mb-3 md:text-lg font-medium text-md">All Appointments</p>
 
             <div className="bg-white border rounded text-sm max-h-[80vh] overflow-y-scroll min-h-[60vh]">
                 {/* Header */}
