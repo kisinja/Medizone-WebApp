@@ -5,6 +5,7 @@ const router = express.Router();
 
 import { register, login, getUserProfile, updateUserProfile, bookAppointment, getMyAppointments, cancelAppointment } from '../controllers/user.js';
 import authUser from '../middleware/authUser.js';
+import upload from '../middleware/multer.js';
 
 router.post('/register', register);
 router.post('/login', login);
