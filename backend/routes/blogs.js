@@ -8,6 +8,7 @@ import {
     getBlogsByTag
 } from '../controllers/blogs.js';
 import authUser from '../middleware/authUser.js';
+import upload from '../middleware/multer.js';
 
 const router = express.Router();
 
