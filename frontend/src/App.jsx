@@ -16,6 +16,7 @@ import TermsAndConditions from "./pages/TermsAndConditions"
 import JobOpenings from "./pages/JobOpenings"
 import { useContext } from "react"
 import { AppContext } from "./context/AppContext"
+import BlogForm from "./pages/BlogForm";
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/doctors/:speciality" element={token ? <Doctors /> : <Navigate to="/login" />} />
+        <Route path="/publish-blog" element={token ? <BlogForm /> : <Navigate to="/login" />} />
         <Route path="/doctors/" element={token ? <Doctors /> : <Navigate to="/login" />} />
         <Route path="/my-profile" element={token ? <Profile /> : <Navigate to="/login" />} />
         <Route path="/my-appointments" element={token ? <MyAppointments /> : <Navigate to="/login" />} />

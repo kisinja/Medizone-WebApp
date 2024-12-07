@@ -1,5 +1,5 @@
-import Comment from "../models/Comment";
-import Blog from "../models/Blog";
+import Comment from "../models/Comment.js";
+import Blog from "../models/Blog.js";
 
 // @desc    Add a comment to a blog
 // @route   POST /api/comments
