@@ -66,7 +66,7 @@ const AllAppointments = () => {
                                 />
                                 <p>{item.docData.name}</p>
                             </div>
-                            <p>
+                            <p className="font-semibold md:font-normal">
                                 {currencySymbol}
                                 {item.amount}
                             </p>
