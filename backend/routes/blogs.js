@@ -15,7 +15,7 @@ router.use(authUser);
 
 router.get('/', getAllBlogs);
 router.get('/:id', getBlogById);
-router.post('/', upload.single('imageUrl'), createBlog);
+router.post('/', upload.array('imageUrls', 5), createBlog);
 router.put('/:id', updateBlog);
 router.delete('/:id', deleteBlog);
 router.get('/tag', getBlogsByTag);

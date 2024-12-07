@@ -59,19 +59,27 @@ const createBlog = async (req, res) => {
     const { title, content, tags, published } = req.body;
     const userId = req.user;
 
-    if (!req.file) {
-        return res.status(400).json({ message: "No image uploaded", success: false });
-    };
-
-    const imageUpload = await cloudinary.uploader.upload(req.file.path, { resource_type: "image" });
-    const imgUrl = imageUpload.secure_url;
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: "No images uploaded", success: false });
+    }
 
     try {
+        // Upload images to Cloudinary
+        const uploadPromises = req.files.map((file) =>
+            cloudinary.uploader.upload(file.path)
+        );
+
+        const uploadResults = await Promise.all(uploadPromises);
+
+        // Get all uploaded image URLs
+        const imageUrls = uploadResults.map((result) => result.secure_url);
+
+        // Create new blog
         const blog = new Blog({
             title,
             content,
             author: userId,
-            imageUrls: imgUrl,
+            imageUrls,
             tags: JSON.parse(tags),
             published,
         });
@@ -88,19 +96,34 @@ const createBlog = async (req, res) => {
 // @route   PUT /api/blogs/:id
 // @access  Private (Admin only)
 const updateBlog = async (req, res) => {
-    const { title, content, imageUrls, tags, published } = req.body;
+    const { title, content, tags, published } = req.body;
+    const blogId = req.params.id;
 
     try {
-        const blog = await Blog.findById(req.params.id);
+        const blog = await Blog.findById(blogId);
 
         if (!blog) {
             return res.status(404).json({ message: "Blog not found", success: false });
         }
 
+        // Upload new images if any
+        let newImageUrls = [];
+        if (req.files && req.files.length > 0) {
+            const uploadPromises = req.files.map((file) =>
+                cloudinary.uploader.upload(file.path, { resource_type: "image" })
+            );
+            const uploadResults = await Promise.all(uploadPromises);
+            newImageUrls = uploadResults.map((result) => result.secure_url);
+        }
+
+        // Merge existing and new images
+        const updatedImageUrls = [...(blog.imageUrls || []), ...newImageUrls];
+
+        // Update blog fields
         blog.title = title || blog.title;
         blog.content = content || blog.content;
-        blog.imageUrls = imageUrls || blog.imageUrls;
-        blog.tags = tags || blog.tags;
+        blog.imageUrls = updatedImageUrls;
+        blog.tags = tags ? JSON.parse(tags) : blog.tags;
         blog.published = published !== undefined ? published : blog.published;
 
         const updatedBlog = await blog.save();
