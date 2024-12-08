@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
+import { AppContext } from "../../context/AppContext";
 import { useEffect } from "react";
 import Loader from "../../components/Loader";
 import docIcon from '../../assets/assets_admin/doctor_icon.svg';
@@ -11,6 +12,7 @@ import icon from '../../assets/assets_admin/cancel_icon.svg';
 const Dashboard = () => {
 
     const { dashData, dashDataLoading, getDashData, cancelAppointment, aToken, cancelLoading } = useContext(AdminContext);
+    const { slotDateFormat } = useContext(AppContext);
 
     useEffect(() => {
         if (aToken) {
@@ -63,7 +65,9 @@ const Dashboard = () => {
                                 <img src={app.docData.image} alt="" className="rounded-full w-10 h-10 object-cover" />
                                 <div className="flex-1 text-sm">
                                     <p className="text-gray-800 font-medium">{app.docData.name}</p>
-                                    <p className="text-gray-600">{app.slotDate}</p>
+                                    <p className="text-gray-600">{
+                                        slotDateFormat(app.slotDate)}
+                                    </p>
                                 </div>
 
                                 {app.cancelled ? (
