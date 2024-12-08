@@ -45,7 +45,8 @@ const Login = () => {
                     localStorage.setItem('currentDoctor', JSON.stringify(data.doctor));
 
                     setDToken(data.token);
-                    toast.success("Login successful");
+                    toast.success(data.message);
+                    console.log(data);
                 } else {
                     toast.error(data.message);
                 }

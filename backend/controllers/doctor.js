@@ -58,7 +58,7 @@ const doctorLogin = async (req, res) => {
             id: doctorExists._id,
         }, process.env.JWT_SECRET);
 
-        res.json({ success: true, doctor: doctorExists, token }).status(200);
+        res.json({ success: true, doctor: doctorExists, token, message: `Welcome back, ${doctorExists.name}` }).status(200);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message, success: false });
