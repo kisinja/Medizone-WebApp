@@ -6,7 +6,7 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
 
-    const currencySymbol = '$';
+    const currencySymbol = 'Kshs. ';
 
     const backendUrl = import.meta.env.VITE_BACKEND;
 

@@ -4,7 +4,7 @@ export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
 
-    const currencySymbol = "$";
+    const currencySymbol = "Kshs. ";
 
     const calculateAge = (dob) => {
         const today = new Date();
