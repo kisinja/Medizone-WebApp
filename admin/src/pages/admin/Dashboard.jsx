@@ -85,9 +85,8 @@ const Dashboard = () => {
                     }
                 </div>
             </div>
-
         </section>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;
