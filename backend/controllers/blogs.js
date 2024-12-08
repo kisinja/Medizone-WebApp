@@ -1,5 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import Blog from '../models/Blog.js';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
 
 // @desc    Get all blogs
 // @route   GET /api/blogs
@@ -62,6 +64,12 @@ const createBlog = async (req, res) => {
     }
 
     try {
+
+        // Sanitize blog content
+        const window = new JSDOM('').window;
+        const purify = DOMPurify(window);
+        const sanitizedContent = purify.sanitize(content);
+
         // Upload images to Cloudinary
         const uploadPromises = req.files.map((file) =>
             cloudinary.uploader.upload(file.path)
@@ -75,7 +83,7 @@ const createBlog = async (req, res) => {
         // Create new blog
         const blog = new Blog({
             title,
-            content,
+            content: sanitizedContent,
             imageUrls,
             tags: JSON.parse(tags),
             published,

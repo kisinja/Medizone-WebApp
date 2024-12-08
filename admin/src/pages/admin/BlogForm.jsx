@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
@@ -34,6 +36,10 @@ const BlogForm = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleContentChange = (value) => {
+        setFormData((prev) => ({ ...prev, content: value }));
     };
 
     const handleCheckboxChange = () => {
@@ -75,10 +81,11 @@ const BlogForm = () => {
                 setUploadedImages([]);
             } else {
                 toast.error(data.message);
+                console.log(data);
             }
         } catch (error) {
             console.error(error);
-            alert("An error occurred while creating the blog.");
+            toast.error(error.message);
         } finally {
             setIsSubmitting(false);
         }
@@ -91,12 +98,12 @@ const BlogForm = () => {
 
     return (
 
-        <section className="bg-white border rounded text-sm max-h-fit overflow-y-scroll min-h-[60vh] flex justify-center items-center py-8 px-4 w-full">
+        <section className="bg-white border rounded text-sm max-h-fit overflow-y-scroll min-h-[60vh] py-8 px-4 w-full">
+
+            <h1 className="mb-3 md:text-lg font-medium text-gray-800 text-base">Publish a new Blog</h1>
+
             <div className="w-full max-w-4xl">
-                <form onSubmit={handleSubmit} className="space-y-6 py-4 px-8 bg-gray-50 shadow-lg rounded-lg w-full">
-
-                    <h1 className="text-3xl font-bold mb-6 text-gray-600 text-center">Create a New Blog</h1>
-
+                <form onSubmit={handleSubmit} className="space-y-6 py-4 px-6 bg-gray-50 shadow-lg rounded-lg w-full">
                     <div>
                         <label className="block text-gray-700 font-medium mb-2">Title</label>
                         <input
@@ -112,13 +119,13 @@ const BlogForm = () => {
 
                     <div>
                         <label className="block text-gray-700 font-medium mb-2">Content</label>
-                        <textarea
+                        <ReactQuill
                             name="content"
+                            theme="snow"
                             value={formData.content}
-                            onChange={handleChange}
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
-                            rows="6"
-                            placeholder="Write your blog content"
+                            onChange={handleContentChange}
+                            className="w-full bg-white rounded-lg"
+                            placeholder="Write your blog content here..."
                             required
                         />
                     </div>

@@ -9,11 +9,11 @@ const DoctorsCard = ({ doctor }) => {
     const { name, image, speciality, available, _id } = doctor;
 
     return (
-        <div className='border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer group'>
+        <div className='border border-indigo-200 rounded-xl overflow-hidden cursor-pointer group w-full'>
             <img
                 src={image || <Loader text="" />}
                 alt={`${name}'s profile picture`}
-                className='bg-indigo-50 group-hover:bg-primary transition-all duration-500'
+                className='bg-indigo-50 group-hover:bg-primary transition-all duration-500 w-full h-[250px] object-cover'
             />
 
             <div className='p-4'>
