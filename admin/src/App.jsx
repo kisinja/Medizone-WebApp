@@ -13,12 +13,14 @@ import DoctorsList from "./pages/admin/DoctorsList";
 import './App.css';
 import BlogForm from "./pages/admin/BlogForm";
 import BlogsList from "./pages/admin/BlogsList";
+import { DoctorContext } from "./context/DoctorContext";
 
 const App = () => {
 
   const { aToken } = useContext(AdminContext);
+  const { dToken } = useContext(DoctorContext);
 
-  return aToken ? (
+  return aToken || dToken ? (
     <main className="bg-[#F8F9FD]">
       <ToastContainer />
       <Navbar />
