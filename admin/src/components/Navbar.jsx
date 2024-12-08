@@ -1,17 +1,25 @@
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
+import { DoctorContext } from "../context/DoctorContext";
 
 const Navbar = () => {
 
     const { aToken, setAToken } = useContext(AdminContext);
+    const { loggedInDoctor } = useContext(DoctorContext);
 
     const navigate = useNavigate();
 
     const logout = () => {
         navigate('/');
-        aToken && setAToken('');
-        aToken && localStorage.removeItem('aToken');
+
+        if (aToken) {
+            localStorage.removeItem('aToken');
+            setAToken('');
+        } else {
+            localStorage.removeItem('dToken');
+            localStorage.removeItem('currentDoctor');
+        }
     };
 
     return (
@@ -20,11 +28,20 @@ const Navbar = () => {
                 <div className="w-12 h-12 rounded-full bg-primary"></div>
                 <div className="flex flex-col">
                     <span>Medizone</span>
-                    <span className="text-xs text-gray-600 font-semibold tracking-wider">Admin Panel</span>
+                    <span className="text-xs text-gray-600 font-semibold tracking-wider">Dashboard Panel</span>
                 </div>
             </div>
 
-            <button className="bg-primary text-white text-sm py-2 rounded-full px-10" onClick={logout}>Logout</button>
+            {
+                loggedInDoctor ? (
+                    <div className="flex items-center gap-4">
+                        <img src={loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
+                        <button className="bg-blue-50 border border-primary text-sm py-2 rounded-full px-10" onClick={logout}>Logout</button>
+                    </div>
+                ) : (
+                    <button className="bg-primary text-white text-sm py-2 rounded-full px-10" onClick={() => navigate('/login')}>Login</button>
+                )
+            }
         </nav>
     );
 };
