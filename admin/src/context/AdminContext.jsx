@@ -14,8 +14,31 @@ export const AdminContextProvider = ({ children }) => {
     const [appointmentsLoading, setAppointmentsLoading] = useState(true);
     const [cancelLoading, setCancelLoading] = useState(false);
     const [appointments, setAppointments] = useState([]);
+    const [blogs, setBlogs] = useState([]);
+    const [blogsLoading, setBlogsLoading] = useState(true);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+    const getAllBlogs = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/blogs`, {
+                headers: {
+                    'Authorization': `Bearer ${aToken}`,
+                },
+            });
+            if (data.success) {
+                setBlogs(data.blogs);
+            } else {
+                toast.error(data.message);
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setBlogsLoading(false);
+        }
+    };
 
     const getAllDoctors = async () => {
         setLoading(true);
@@ -118,7 +141,10 @@ export const AdminContextProvider = ({ children }) => {
         setAppointments,
         appointmentsLoading,
         cancelAppointment,
-        cancelLoading
+        cancelLoading,
+        blogs,
+        getAllBlogs,
+        blogsLoading,
     };
 
     return (

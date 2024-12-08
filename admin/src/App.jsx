@@ -12,6 +12,7 @@ import AddDoctor from "./pages/admin/AddDoctor";
 import DoctorsList from "./pages/admin/DoctorsList";
 import './App.css';
 import BlogForm from "./pages/admin/BlogForm";
+import BlogsList from "./pages/admin/BlogsList";
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/add-doctor" element={<AddDoctor />} />
           <Route path="/doctor-list" element={<DoctorsList />} />
           <Route path="/publish-blog" element={<BlogForm />} />
+          <Route path="/blogs" element={<BlogsList />} />
         </Routes>
       </div>
     </main>
