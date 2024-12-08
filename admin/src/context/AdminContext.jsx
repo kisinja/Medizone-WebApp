@@ -16,8 +16,31 @@ export const AdminContextProvider = ({ children }) => {
     const [appointments, setAppointments] = useState([]);
     const [blogs, setBlogs] = useState([]);
     const [blogsLoading, setBlogsLoading] = useState(true);
+    const [dashData, setDashData] = useState({});
+    const [dashDataLoading, setDashDataLoading] = useState(true);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+    const getDashData = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/admin/dashboard`, {
+                headers: {
+                    "Authorization": `Bearer ${aToken}`,
+                },
+            });
+            if (data.success) {
+                setDashData(data.dashData);
+                console.log(data);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setDashDataLoading(false);
+        }
+    };
 
     const getAllBlogs = async () => {
         try {
@@ -145,6 +168,9 @@ export const AdminContextProvider = ({ children }) => {
         blogs,
         getAllBlogs,
         blogsLoading,
+        dashData,
+        getDashData,
+        dashDataLoading,
     };
 
     return (
