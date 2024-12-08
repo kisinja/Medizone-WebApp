@@ -71,7 +71,7 @@ const AllAppointments = () => {
                                 {item.amount}
                             </p>
                             {item.cancelled ? (
-                                <p className="text-red-500">Cancelled</p>
+                                <p className="text-red-400 text-xs">Cancelled</p>
                             ) : (
                                 <img
                                     src={icon}

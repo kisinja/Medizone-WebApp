@@ -30,7 +30,6 @@ export const AdminContextProvider = ({ children }) => {
             });
             if (data.success) {
                 setDashData(data.dashData);
-                console.log(data);
             } else {
                 toast.error(data.message);
             }
