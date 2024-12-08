@@ -20,17 +20,22 @@ const Appointment = () => {
     const [slotTime, setSlotTime] = useState('');
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'];
     const [loading, setLoading] = useState(false);
+    const [docInfoLoading, setDocInfoLoading] = useState(true);
     const navigate = useNavigate();
 
     const fetchDocInfo = () => {
         const docInfo = doctors.find((doc) => doc._id === docId);
-        setDoctor(docInfo);
+        if (docInfo) {
+            setDocInfoLoading(false);
+            setDoctor(docInfo);
+        }
     };
 
     const fetchRelatedDoctors = () => {
         if (doctor) {
             const relatedDocs = doctors.filter((doc) => doc.speciality === doctor.speciality && doc._id !== doctor._id);
             setRelatedDoctors(relatedDocs);
+            console.log(relatedDocs);
         }
     };
 
@@ -142,6 +147,8 @@ const Appointment = () => {
 
     if (loading) {
         return <Loader text="Booking Appointment..." />
+    } else if (docInfoLoading) {
+        return <Loader text="Fetching Doctor Info..." />
     }
 
     return doctor && (
@@ -208,10 +215,10 @@ const Appointment = () => {
             {/* Display related doctors if available */}
 
             {relatedDoctors && (
-                <section className="py-5 px-8 bg-gray-100">
+                <section className="py-5 px-8 border rounded-lg">
                     {relatedDoctors.length > 0 && (
                         <div>
-                            <p className="font-semibold text-gray-700 mt-10">Related Doctors</p>
+                            <p className="font-semibold text-gray-700 mt-10">Other {relatedDoctors[0].speciality}s</p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                                 {relatedDoctors.map((item, index) => (
                                     <Link to={`/appointment/${item._id}`} key={index} onClick={scrollTo(0, 0)} >
