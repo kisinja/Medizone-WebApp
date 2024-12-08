@@ -15,7 +15,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white sticky top-0">
+        <nav className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white sticky top-0 z-50">
             <div className="font-bold text-xl flex items-center gap-1 cursor-pointer" onClick={() => navigate('/')}>
                 <div className="w-12 h-12 rounded-full bg-primary"></div>
                 <div className="flex flex-col">
