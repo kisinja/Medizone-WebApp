@@ -14,6 +14,7 @@ const blogSchema = new mongoose.Schema(
         author: {
             type: String,
             required: true,
+            default: "Admin",
         },
         imageUrls: [{
             type: String,

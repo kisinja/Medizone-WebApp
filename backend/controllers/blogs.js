@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary';
-
 import Blog from '../models/Blog.js';
 
 // @desc    Get all blogs
@@ -57,7 +56,6 @@ const getBlogsByTag = async (req, res) => {
 // @access  Private (Authorized only)
 const createBlog = async (req, res) => {
     const { title, content, tags, published } = req.body;
-    const userId = req.user;
 
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ message: "No images uploaded", success: false });
@@ -78,7 +76,6 @@ const createBlog = async (req, res) => {
         const blog = new Blog({
             title,
             content,
-            author: userId,
             imageUrls,
             tags: JSON.parse(tags),
             published,
@@ -139,18 +136,11 @@ const updateBlog = async (req, res) => {
 // @access  Private (Admin only)
 const deleteBlog = async (req, res) => {
 
-    const userId = req.user;
-
     try {
         const blog = await Blog.findById(req.params.id);
 
         if (!blog) {
             return res.status(404).json({ message: "Blog not found", success: false });
-        } else if (blog.author !== userId) {
-            return res.status(401).json({
-                message: "Unauthorized Action !!",
-                success: false
-            });
         }
 
         await blog.remove();

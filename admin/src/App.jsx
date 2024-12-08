@@ -11,6 +11,7 @@ import AllAppointments from "./pages/admin/AllAppointments";
 import AddDoctor from "./pages/admin/AddDoctor";
 import DoctorsList from "./pages/admin/DoctorsList";
 import './App.css';
+import BlogForm from "./pages/admin/BlogForm";
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/all-appointments" element={<AllAppointments />} />
           <Route path="/add-doctor" element={<AddDoctor />} />
           <Route path="/doctor-list" element={<DoctorsList />} />
+          <Route path="/publish-blog" element={<BlogForm />} />
         </Routes>
       </div>
     </main>

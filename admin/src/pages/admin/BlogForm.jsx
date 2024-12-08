@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+import Loader from "../../components/Loader";
+import { AdminContext } from "../../context/AdminContext";
 
 const BlogForm = () => {
     const [formData, setFormData] = useState({
@@ -13,7 +13,7 @@ const BlogForm = () => {
         published: false,
     });
 
-    const { backendUrl, token } = useContext(AppContext);
+    const { backendUrl, aToken } = useContext(AdminContext);
 
     const [uploadedImages, setUploadedImages] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,7 +61,7 @@ const BlogForm = () => {
             const { data } = await axios.post(`${backendUrl}/api/blogs`, formDataToSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${aToken}`,
                 },
             });
             if (data.success) {
@@ -90,10 +90,13 @@ const BlogForm = () => {
     }
 
     return (
-        <section className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-            <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
-                <h1 className="text-3xl font-bold mb-6 text-gray-600 text-center">Create a New Blog</h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
+
+        <section className="bg-white border rounded text-sm max-h-fit overflow-y-scroll min-h-[60vh] flex justify-center items-center py-8 px-4 w-full">
+            <div className="w-full max-w-4xl">
+                <form onSubmit={handleSubmit} className="space-y-6 py-4 px-8 bg-gray-50 shadow-lg rounded-lg w-full">
+
+                    <h1 className="text-3xl font-bold mb-6 text-gray-600 text-center">Create a New Blog</h1>
+
                     <div>
                         <label className="block text-gray-700 font-medium mb-2">Title</label>
                         <input
@@ -168,16 +171,19 @@ const BlogForm = () => {
                         </label>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 disabled:opacity-50"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? "Submitting..." : "Create Blog"}
-                    </button>
+                    <div className="mt-3 flex justify-center items-center">
+                        <button
+                            type="submit"
+                            className=" bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 disabled:opacity-50 px-8 font-semibold"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? "Submitting..." : "Submit"}
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>
+
     );
 };
 
