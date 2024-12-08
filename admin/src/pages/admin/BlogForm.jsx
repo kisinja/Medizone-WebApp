@@ -124,7 +124,7 @@ const BlogForm = () => {
                             theme="snow"
                             value={formData.content}
                             onChange={handleContentChange}
-                            className="w-full bg-white rounded-lg"
+                            className="w-full bg-white rounded-lg md:h-auto"
                             placeholder="Write your blog content here..."
                             required
                         />
@@ -143,7 +143,9 @@ const BlogForm = () => {
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 font-medium mb-2">Upload Images</label>
+                        <label className="block text-gray-700 font-medium mb-2">Upload Images
+                            <span className="text-xs text-gray-500 ml-1"> (max 5)</span>
+                        </label>
                         <div
                             {...getRootProps()}
                             className="border-dashed border-2 border-gray-300 rounded-lg p-6 flex justify-center items-center text-gray-500 cursor-pointer hover:bg-gray-50"
