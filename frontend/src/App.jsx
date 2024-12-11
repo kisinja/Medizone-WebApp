@@ -16,6 +16,8 @@ import TermsAndConditions from "./pages/TermsAndConditions"
 import JobOpenings from "./pages/JobOpenings"
 import { useContext } from "react"
 import { AppContext } from "./context/AppContext";
+import Blogs from "./pages/Blogs";
+import BlogDetails from "./pages/BlogDetails";
 
 const App = () => {
 
@@ -31,6 +33,8 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/doctors/:speciality" element={token ? <Doctors /> : <Navigate to="/login" />} />
         <Route path="/doctors/" element={token ? <Doctors /> : <Navigate to="/login" />} />
+        <Route path="/blogs" element={token ? <Blogs /> : <Navigate to="/login" />} />
+        <Route path="/blogs/:id" element={token ? <BlogDetails /> : <Navigate to="/login" />} />
         <Route path="/my-profile" element={token ? <Profile /> : <Navigate to="/login" />} />
         <Route path="/my-appointments" element={token ? <MyAppointments /> : <Navigate to="/login" />} />
         <Route path="/appointment/:docId" element={token ? <Appointment /> : <Navigate to="/login" />} />

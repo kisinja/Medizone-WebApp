@@ -25,7 +25,13 @@ const getBlogById = async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: "Blog not found", success: false });
         }
-        res.status(200).json({ blog, success: true });
+
+        const relatedBlogs = await Blog.find({
+            _id: { $ne: blog._id },
+            tags: { $in: blog.tags },
+        }).limit(4);
+
+        res.status(200).json({ blog, relatedBlogs, success: true });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
         console.log(error.message);

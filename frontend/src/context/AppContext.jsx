@@ -16,6 +16,25 @@ const AppContextProvider = (props) => {
         localStorage.getItem('token') ? localStorage.getItem('token') : ''
     );
     const [userData, setUserData] = useState(false);
+    const [blogs, setBlogs] = useState([]);
+    const [blogsLoading, setBlogsLoading] = useState(true);
+
+    const getAllBlogs = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/blogs`);
+            if (data.success) {
+                setBlogs(data.blogs);
+                console.log(blogs);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setBlogsLoading(false);
+        }
+    };
 
     const getDoctorsData = async () => {
         setLoading(true);
@@ -75,7 +94,10 @@ const AppContextProvider = (props) => {
         backendUrl,
         userData,
         setUserData,
-        loadUserProfile
+        loadUserProfile,
+        blogs,
+        blogsLoading,
+        getAllBlogs
     };
 
     return (
