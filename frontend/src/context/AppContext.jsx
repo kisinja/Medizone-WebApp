@@ -21,7 +21,11 @@ const AppContextProvider = (props) => {
 
     const getAllBlogs = async () => {
         try {
-            const { data } = await axios.get(`${backendUrl}/api/blogs`);
+            const { data } = await axios.get(`${backendUrl}/api/blogs`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             if (data.success) {
                 setBlogs(data.blogs);
                 console.log(blogs);
