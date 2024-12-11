@@ -37,52 +37,69 @@ const BlogDetails = () => {
         fetchBlog();
     }, [id, backendUrl, token]);
 
-    if (loading) return <Loader text="fetching blog..." />;
+    if (loading) return <Loader text="Fetching blog..." />;
 
     return (
-        <div className="bg-gray-100 min-h-screen">
-            <div className="container mx-auto py-8">
-                <h1 className="text-4xl font-bold text-center mb-6">{blog.title}</h1>
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    <div className="lg:col-span-3">
-                        <div className="bg-white shadow-lg rounded-lg p-6">
-                            {blog.imageUrls.map((url, index) => (
-                                <img
-                                    key={index}
-                                    src={url}
-                                    alt={`Blog Image ${index + 1}`}
-                                    className="w-full h-[200px] mb-4 rounded-lg object-cover"
-                                />
-                            ))}
+        <section className="bg-gray-100 min-h-screen">
+            <div className="container mx-auto py-12">
+                {/* Blog Header */}
+                <div className="text-center">
+                    <h1 className="text-5xl font-bold mb-4">{blog.title}</h1>
+                    <p className="text-gray-600 text-lg">{blog.author} · {blog.createdAt}</p>
+                </div>
+
+                {/* Blog Content Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+                    {/* Main Content */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-white shadow-lg rounded-lg p-8">
+                            {/* Image Gallery */}
+                            <div className="grid grid-cols-3 gap-2 mb-6">
+                                {blog.imageUrls.map((url, index) => (
+                                    <img
+                                        key={index}
+                                        src={url}
+                                        alt={`Blog Image ${index + 1}`}
+                                        className="rounded-lg object-cover h-40 w-full"
+                                    />
+                                ))}
+                            </div>
+                            {/* Blog Text */}
                             <div
-                                className="text-gray-700 text-lg leading-7"
+                                className="text-gray-700 text-lg leading-8"
                                 dangerouslySetInnerHTML={{ __html: blog.content }}
                             ></div>
                         </div>
                     </div>
-                    <div>
-                        <h2 className="text-2xl font-bold mb-4">Related Blogs</h2>
+
+                    {/* Related Blogs Section */}
+                    <div className="space-y-6">
+                        <h2 className="text-3xl font-bold">Related Blogs</h2>
                         {relatedBlogs.map((related) => (
                             <Link
                                 to={`/blogs/${related._id}`}
                                 key={related._id}
-                                className="block bg-white shadow-lg rounded-lg mb-4 overflow-hidden hover:shadow-xl transition"
+                                className="block bg-white shadow-lg rounded-lg hover:shadow-xl transition"
                             >
-                                <img
-                                    src={related.imageUrls[0] || '/default-blog.jpg'}
-                                    alt={related.title}
-                                    className="w-full h-32 object-cover"
-                                />
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold">{related.title}</h3>
-                                    <p className="text-gray-600">{related.content.slice(0, 50)}...</p>
+                                <div className="grid grid-cols-3">
+                                    <img
+                                        src={related.imageUrls[0] || '/default-blog.jpg'}
+                                        alt={related.title}
+                                        className="rounded-l-lg object-cover h-32 w-full"
+                                    />
+                                    <div className="col-span-2 p-4">
+                                        <h3 className="text-lg font-semibold">{related.title}</h3>
+                                        <p className="text-gray-600 line-clamp-2">
+                                            {related.content}
+                                        </p>
+                                    </div>
                                 </div>
                             </Link>
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 
