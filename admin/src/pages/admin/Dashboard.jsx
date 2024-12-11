@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import docIcon from '../../assets/assets_admin/doctor_icon.svg';
 import appIcon from '../../assets/assets_admin/appointments_icon.svg';
@@ -29,20 +30,24 @@ const Dashboard = () => {
     return dashData && (
         <section className="m-5">
             <div className="flex flex-wrap gap-3">
-                <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
-                    <img src={docIcon} alt="" className="w-14 " />
-                    <div>
-                        <p className="text-xl font-semibold text-gray-600">{dashData.doctors}</p>
-                        <p className="text-gray-400">Doctors</p>
+                <Link to="/doctor-list">
+                    <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+                        <img src={docIcon} alt="" className="w-14 " />
+                        <div>
+                            <p className="text-xl font-semibold text-gray-600">{dashData.doctors}</p>
+                            <p className="text-gray-400">Doctors</p>
+                        </div>
                     </div>
-                </div>
-                <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
-                    <img src={appIcon} alt="" className="w-14 " />
-                    <div>
-                        <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
-                        <p className="text-gray-400">Appointments</p>
+                </Link>
+                <Link to="/all-appointments">
+                    <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+                        <img src={appIcon} alt="" className="w-14 " />
+                        <div>
+                            <p className="text-xl font-semibold text-gray-600">{dashData.appointments}</p>
+                            <p className="text-gray-400">Appointments</p>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
                     <img src={patIcon} alt="" className="w-14 " />
                     <div>
