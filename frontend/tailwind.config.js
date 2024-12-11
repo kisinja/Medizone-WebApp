@@ -15,7 +15,7 @@ export default {
         'primary': "orange"
       },
       gridTemplateColumns: {
-        'auto':'repeat(auto-fill, minmax(200px, 1fr))'
+        'auto': 'repeat(auto-fill, minmax(200px, 1fr))'
       }
     },
   },
@@ -34,6 +34,7 @@ export default {
       }
 
       addUtilities(newUtilities, ['responsive', 'hover'])
-    }
+    },
+    '@tailwindcss/line-clamp',
   ],
 }

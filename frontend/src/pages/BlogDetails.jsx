@@ -51,10 +51,13 @@ const BlogDetails = () => {
                                     key={index}
                                     src={url}
                                     alt={`Blog Image ${index + 1}`}
-                                    className="w-full mb-4 rounded-lg"
+                                    className="w-full h-[200px] mb-4 rounded-lg object-cover"
                                 />
                             ))}
-                            <p className="text-gray-700 text-lg leading-7">{blog.content}</p>
+                            <div
+                                className="text-gray-700 text-lg leading-7 line-clamp-3"
+                                dangerouslySetInnerHTML={{ __html: blog.content }}
+                            ></div>
                         </div>
                     </div>
                     <div>

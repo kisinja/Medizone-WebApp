@@ -22,12 +22,12 @@ const Blogs = () => {
     }
 
     return (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 min-h-screen">
             <div className="container mx-auto py-8">
-                <h1 className="text-4xl font-bold text-center mb-6">Blogs</h1>
+                <h1 className="text-4xl font-semibold text-center mb-6 text-gray-800">Blogs</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {blogs.map(blog => (
+                    {blogs && blogs.map(blog => (
                         <div
                             key={blog._id}
                             className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition"
@@ -40,10 +40,16 @@ const Blogs = () => {
 
                             <div className="p-4">
                                 <h3 className="font-semibold text-lg mb-2">{blog.title}</h3>
-                                <p className="text-gray-600 mb-4">{blog.content.slice(0, 80)}...</p>
+
+                                <div className="flex gap-1">
+                                    <div
+                                        className="text-sm text-gray-500 content-clamp"
+                                        dangerouslySetInnerHTML={{ __html: `${blog.content.slice(0, 80)}` }}
+                                    ></div>
+                                </div>
 
                                 <div className="flex gap-2 mb-4">
-                                    {blogs.tags.map((tag, index) => (
+                                    {blogs.tags && blogs.tags.map((tag, index) => (
                                         <span key={index} className="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
                                             #{tag}
                                         </span>
