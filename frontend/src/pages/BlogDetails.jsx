@@ -40,6 +40,8 @@ const BlogDetails = () => {
 
     if (loading) return <Loader text="Fetching blog..." />;
 
+    const pageUrl = `${window.location.origin}/blogs/${id}`;
+
     return (
         <>
             {/* Helmet for SEO */}
@@ -52,7 +54,8 @@ const BlogDetails = () => {
                 <meta property="og:description" content={blog.content.slice(0, 150)} />
                 <meta property="og:image" content={blog.imageUrls[0] || '/default-blog.jpg'} />
                 <meta property="og:type" content="article" />
-                <meta property="og:url" content={window.location.href} />
+                <meta property="og:url" content={pageUrl} />
+                <link rel="canonical" href={pageUrl} />
             </Helmet>
 
             <section className="bg-gray-100 min-h-screen">
@@ -78,6 +81,8 @@ const BlogDetails = () => {
                                             src={url}
                                             alt={`Blog Image ${index + 1}`}
                                             className="rounded-lg object-cover h-40 w-full"
+                                            width="300" // Example width
+                                            height="160" // Example height
                                         />
                                     ))}
                                 </div>
@@ -103,6 +108,8 @@ const BlogDetails = () => {
                                             src={related.imageUrls[0] || '/default-blog.jpg'}
                                             alt={related.title}
                                             className="rounded-l-lg object-cover h-32 w-full"
+                                            width="200" // Example width
+                                            height="128" // Example height
                                         />
                                         <div className="col-span-2 p-4">
                                             <h3 className="text-lg font-semibold">{related.title}</h3>
