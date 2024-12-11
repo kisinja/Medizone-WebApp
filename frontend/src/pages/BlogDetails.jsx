@@ -55,7 +55,7 @@ const BlogDetails = () => {
                                 />
                             ))}
                             <div
-                                className="text-gray-700 text-lg leading-7 line-clamp-3"
+                                className="text-gray-700 text-lg leading-7"
                                 dangerouslySetInnerHTML={{ __html: blog.content }}
                             ></div>
                         </div>
