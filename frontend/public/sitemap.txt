@@ -1,0 +1,5 @@
+https://medizoneclient.onrender.com
+https://medizoneclient.onrender.com/login
+https://medizoneclient.onrender.com/blogs
+https://medizoneclient.onrender.com/doctor-list
+https://medizoneclient.onrender.com/all-appointments

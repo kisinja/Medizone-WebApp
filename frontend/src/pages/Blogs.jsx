@@ -43,7 +43,7 @@ const Blogs = () => {
 
                                 <div className="flex gap-1">
                                     <div
-                                        className="text-sm text-gray-500 content-clamp"
+                                        className="text-sm text-gray-500 line-clamp-3"
                                         dangerouslySetInnerHTML={{ __html: `${blog.content.slice(0, 80)}` }}
                                     ></div>
                                 </div>

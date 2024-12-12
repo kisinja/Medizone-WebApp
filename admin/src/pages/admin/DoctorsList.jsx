@@ -21,7 +21,7 @@ const DoctorsList = () => {
         <div className='m-5 max-h-[90vh] overflow-y-scroll'>
             <h1 className="text-lg font-medium">All Doctors</h1>
 
-            <div className="flex w-full flex-wrap gap-4 pt-5 gap-y-6">
+            <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {doctors && doctors.map((item, index) => (
                     <DoctorsCard key={index} doctor={item} />
                 ))}
