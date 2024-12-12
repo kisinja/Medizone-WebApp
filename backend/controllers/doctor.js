@@ -80,9 +80,61 @@ const getMyAppointments = async (req, res) => {
     }
 };
 
+// cancel appointment
+const cancelAppointment = async (req, res) => {
+    const docId = req.docId;
+    try {
+        const { appointmentId } = req.body;
+
+        // Use appointmentId in findById
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: "Appointment not found" });
+        }
+
+        if (appointment.docId !== docId) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        await Appointment.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        res.json({ success: true, message: "Appointment cancelled" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
+// complete appointment
+const completeAppointment = async (req, res) => {
+    const docId = req.docId;
+    try {
+        const { appointmentId } = req.body;
+
+        // Use appointmentId in findById
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: "Appointment not found" });
+        }
+
+        if (appointment.docId !== docId) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        await Appointment.findByIdAndUpdate(appointmentId, { isCompleted: true });
+
+        res.json({ success: true, message: "Appointment completed" });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
 export {
     changeAvailability,
     getDoctorsData,
     doctorLogin,
-    getMyAppointments
+    getMyAppointments,
+    completeAppointment,
+    cancelAppointment
 };

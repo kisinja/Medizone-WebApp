@@ -7,20 +7,22 @@ import tick from '../../../assets/assets_admin/tick_icon.svg';
 
 const DoctorAppointment = () => {
 
-    const { appointments, appLoading, getAppointments, dToken } = useContext(DoctorContext);
+    const { appointments, appLoading, getAppointments, dToken, cancelAppointment, completeAppointment, cancelLoading, completeLoading } = useContext(DoctorContext);
     const { calculateAge, slotDateFormat, currencySymbol } = useContext(AppContext);
 
     useEffect(() => {
         if (dToken) {
             getAppointments();
         }
-    }, [dToken]);
+    }, []);
 
     if (appLoading) {
-        return <Loader text="Loading your appointments" />
-    }
-
-    if (appointments.length === 0) {
+        return <Loader text="Loading your appointments..." />
+    } else if (cancelLoading) {
+        return <Loader text="Cancelling appointment..." />
+    } else if (completeLoading) {
+        return <Loader text="Completing appointment..." />
+    } else if (appointments.length === 0) {
         return <div className="flex justify-center items-center text-gray-600 min-h-screen text-center">No appointments found</div>
     }
 
@@ -72,17 +74,20 @@ const DoctorAppointment = () => {
                                     src={icon}
                                     alt=""
                                     className="w-10 h-10 rounded-full cursor-pointer"
+                                    onClick={() => cancelAppointment(item._id)}
+                                    title="Cancel Appointment"
                                 />
                                 <img
                                     src={tick}
                                     alt=""
                                     className="w-10 h-10 rounded-full cursor-pointer"
+                                    onClick={() => completeAppointment(item._id)}
+                                    title="Complete Appointment"
                                 />
                             </div>
                         </div>
                     ))
                 }
-
             </div>
         </section>
     );

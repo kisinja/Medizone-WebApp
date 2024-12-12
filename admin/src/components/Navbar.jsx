@@ -35,9 +35,16 @@ const Navbar = () => {
             </div>
 
             {
-                dToken ? (
-                    <div className="flex items-center gap-4">
-                        <img src={loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
+                dToken || aToken ? (
+                    <div>
+                        {
+                            dToken && (
+                                <div className="flex gap-4 items-center">
+                                    <img src={loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
+
+                                </div>
+                            )
+                        }
                         <button className="bg-blue-50 border border-primary text-sm py-2 rounded-full px-10" onClick={logout}>Logout</button>
                     </div>
                 ) : (
