@@ -14,6 +14,9 @@ import './App.css';
 import BlogForm from "./pages/admin/BlogForm";
 import BlogsList from "./pages/admin/BlogsList";
 import { DoctorContext } from "./context/DoctorContext";
+import DoctorDashboard from "./pages/admin/Doctor/DoctorDashboard";
+import DoctorAppointment from "./pages/admin/Doctor/DoctorAppointment";
+import DoctorProfile from "./pages/admin/Doctor/DoctorProfile";
 
 const App = () => {
 
@@ -27,6 +30,7 @@ const App = () => {
       <div className="flex items-start">
         <Sidebar />
         <Routes>
+          {/* Admin Routes */}
           <Route path="/" element={<></>} />
           <Route path="/admin-dashboard" element={<Dashboard />} />
           <Route path="/all-appointments" element={<AllAppointments />} />
@@ -34,6 +38,11 @@ const App = () => {
           <Route path="/doctor-list" element={<DoctorsList />} />
           <Route path="/publish-blog" element={<BlogForm />} />
           <Route path="/blogs" element={<BlogsList />} />
+
+          {/* Doctor Routes */}
+          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor-appointments" element={<DoctorAppointment />} />
+          <Route path="/doctor-profile" element={<DoctorProfile />} />
         </Routes>
       </div>
     </main>

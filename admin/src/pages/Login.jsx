@@ -46,7 +46,6 @@ const Login = () => {
 
                     setDToken(data.token);
                     toast.success(data.message);
-                    console.log(data);
                 } else {
                     toast.error(data.message);
                 }

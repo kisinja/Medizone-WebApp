@@ -6,19 +6,21 @@ import { DoctorContext } from "../context/DoctorContext";
 const Navbar = () => {
 
     const { aToken, setAToken } = useContext(AdminContext);
-    const { loggedInDoctor } = useContext(DoctorContext);
+    const { loggedInDoctor, dToken } = useContext(DoctorContext);
 
     const navigate = useNavigate();
 
     const logout = () => {
-        navigate('/');
+
 
         if (aToken) {
             localStorage.removeItem('aToken');
             setAToken('');
+            navigate('/');
         } else {
             localStorage.removeItem('dToken');
             localStorage.removeItem('currentDoctor');
+            navigate('/');
         }
     };
 
@@ -33,7 +35,7 @@ const Navbar = () => {
             </div>
 
             {
-                loggedInDoctor ? (
+                dToken ? (
                     <div className="flex items-center gap-4">
                         <img src={loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
                         <button className="bg-blue-50 border border-primary text-sm py-2 rounded-full px-10" onClick={logout}>Logout</button>

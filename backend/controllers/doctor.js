@@ -1,6 +1,7 @@
 import Doctor from '../models/Doctor.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import Appointment from '../models/Appointment.js';
 
 // update doctor's availability
 const changeAvailability = async (req, res) => {
@@ -65,8 +66,23 @@ const doctorLogin = async (req, res) => {
     }
 };
 
+// getting doctor's appointments
+const getMyAppointments = async (req, res) => {
+    const docId = req.docId;
+
+    try {
+        const appointments = await Appointment.find({ docId })
+            .sort({ createdAt: -1 });
+        res.json({ success: true, appointments }).status(200);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
 export {
     changeAvailability,
     getDoctorsData,
-    doctorLogin
+    doctorLogin,
+    getMyAppointments
 };
