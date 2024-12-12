@@ -36,7 +36,7 @@ const Navbar = () => {
 
             {
                 dToken || aToken ? (
-                    <div>
+                    <div className="flex gap-4 items-center">
                         {
                             dToken && (
                                 <div className="flex gap-4 items-center">

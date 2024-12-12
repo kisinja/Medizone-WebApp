@@ -69,22 +69,29 @@ const DoctorAppointment = () => {
                                 {currencySymbol}{item.amount}
                             </p>
 
-                            <div className="flex">
-                                <img
-                                    src={icon}
-                                    alt=""
-                                    className="w-10 h-10 rounded-full cursor-pointer"
-                                    onClick={() => cancelAppointment(item._id)}
-                                    title="Cancel Appointment"
-                                />
-                                <img
-                                    src={tick}
-                                    alt=""
-                                    className="w-10 h-10 rounded-full cursor-pointer"
-                                    onClick={() => completeAppointment(item._id)}
-                                    title="Complete Appointment"
-                                />
-                            </div>
+                            {
+                                item.cancelled
+                                    ? <p className="text-red-400 text-xs font-medium">Cancelled</p>
+                                    : item.isCompleted
+                                        ? <p className="text-green-500 text-xs font-medium">Completed</p>
+                                        : <div className="flex">
+                                            <img
+                                                src={icon}
+                                                alt=""
+                                                className="w-10 h-10 rounded-full cursor-pointer"
+                                                onClick={() => cancelAppointment(item._id)}
+                                                title="Cancel Appointment"
+                                            />
+
+                                            <img
+                                                src={tick}
+                                                alt=""
+                                                className="w-10 h-10 rounded-full cursor-pointer"
+                                                onClick={() => completeAppointment(item._id)}
+                                                title="Complete Appointment"
+                                            />
+                                        </div>
+                            }
                         </div>
                     ))
                 }
