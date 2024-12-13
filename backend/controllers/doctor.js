@@ -148,38 +148,36 @@ const getDocProfile = async (req, res) => {
 
 // update doctor's profile
 const updateDoctorProfile = async (req, res) => {
-    const docId = req.docId; // Assuming docId is retrieved from the middleware (e.g., from a JWT token).
+    const docId = req.docId;
 
     const { fees, address, available, phone } = req.body;
 
     try {
-
         const image = req.file ? req.file.path : null;
 
         const updatedData = {
             fees,
             address: JSON.parse(address),
-            available,
+            available: JSON.parse(available),
             phone,
         };
 
         if (image) {
-            // cloudinary image upload
             const imageUpload = await cloudinary.uploader.upload(image, { resource_type: "image" });
-            const imgUrl = imageUpload.secure_url;
-
-            updatedData.image = imgUrl;
+            updatedData.image = imageUpload.secure_url;
         }
 
-        await Doctor.findByIdAndUpdate(docId, updatedData, { new: true });
+        const updatedProfile = await Doctor.findByIdAndUpdate(docId, updatedData, {
+            new: true,
+        });
 
-        res.json({ success: true, message: "Profile updated!" });
-
+        res.json({ success: true, message: "Profile updated!", updatedProfile });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ error: error.message, success: false });
+        res.status(500).json({ success: false, error: error.message });
     }
 };
+
 
 // get dashboard data for doctors
 const docDashboard = async (req, res) => {
