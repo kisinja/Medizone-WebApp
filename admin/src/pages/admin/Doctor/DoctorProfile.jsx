@@ -20,13 +20,22 @@ const DoctorProfile = () => {
         setLoading(true);
 
         try {
-            const { fees, address, phone, available } = loggedInDoctor;
+
+            const formData = new FormData();
+            formData.append('fees', loggedInDoctor.fees);
+            formData.append('address', JSON.stringify(loggedInDoctor.address));
+            formData.append('phone', loggedInDoctor.phone);
+
+            if (loggedInDoctor.imageFile) {
+                formData.append('image', loggedInDoctor.imageFile);
+            }
 
             const { data } = await axios.post(
                 `${backendUrl}/api/doctor/profile/update`,
-                { fees, address, phone, available },
+                formData,
                 {
                     headers: {
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${dToken}`,
                     },
                 }
@@ -55,6 +64,26 @@ const DoctorProfile = () => {
             <section className="max-w-lg flex flex-col gap-2 text-sm px-8">
                 <form onSubmit={onSubmitHandler}>
                     <div>
+
+                        <p className="text-neutral-500 underline">PERSONAL INFORMATION</p>
+                        {
+                            isEdit
+                                ? (
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setLoggedInDoctor(prev => ({ ...prev, imageFile: e.target.files[0] }))}
+                                        className=""
+                                    />
+                                )
+                                : (
+                                    <img
+                                        src={loggedInDoctor.image || '/path/to/default-image.jpg'} // Use a fallback image if no user image
+                                        alt="User Profile"
+                                        className="w-36 rounded cursor-pointer"
+                                    />
+                                )
+                        }
+
                         <p className="text-neutral-500 underline mt-3">CONTACT INFORMATION</p>
 
                         <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">

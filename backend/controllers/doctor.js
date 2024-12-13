@@ -154,7 +154,24 @@ const updateDoctorProfile = async (req, res) => {
 
     try {
 
-        await Doctor.findByIdAndUpdate(docId, { fees, address, available, phone });
+        const image = req.file ? req.file.path : null;
+
+        const updatedData = {
+            fees,
+            address: JSON.parse(address),
+            available,
+            phone,
+        };
+
+        if (image) {
+            // cloudinary image upload
+            const imageUpload = await cloudinary.uploader.upload(image, { resource_type: "image" });
+            const imgUrl = imageUpload.secure_url;
+
+            updatedData.image = imgUrl;
+        }
+
+        await Doctor.findByIdAndUpdate(docId, updatedData, { new: true });
 
         res.json({ success: true, message: "Profile updated!" });
 
