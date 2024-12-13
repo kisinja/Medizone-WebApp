@@ -2,6 +2,7 @@ import Doctor from '../models/Doctor.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Appointment from '../models/Appointment.js';
+import cloudinary from "cloudinary";
 
 // update doctor's availability
 const changeAvailability = async (req, res) => {
@@ -59,7 +60,10 @@ const doctorLogin = async (req, res) => {
             id: doctorExists._id,
         }, process.env.JWT_SECRET);
 
-        res.json({ success: true, doctor: doctorExists, token, message: `Welcome back, ${doctorExists.name}` }).status(200);
+        const doctor = await Doctor.findById(doctorExists._id)
+            .select('-password');
+
+        res.json({ success: true, doctor, token, message: `Welcome back, ${doctorExists.name}` }).status(200);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message, success: false });
@@ -130,11 +134,81 @@ const completeAppointment = async (req, res) => {
     }
 };
 
+// get doctor's profile
+const getDocProfile = async (req, res) => {
+    const docId = req.docId;
+    try {
+        const doctor = await Doctor.findById(docId).select('-password');
+        res.json({ success: true, doctor }).status(200);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message, success: false });
+    }
+};
+
+// update doctor's profile
+const updateDoctorProfile = async (req, res) => {
+    const docId = req.docId; // Assuming docId is retrieved from the middleware (e.g., from a JWT token).
+
+    const { fees, address, available, phone } = req.body;
+
+    try {
+
+        await Doctor.findByIdAndUpdate(docId, { fees, address, available, phone });
+
+        res.json({ success: true, message: "Profile updated!" });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message, success: false });
+    }
+};
+
+// get dashboard data for doctors
+const docDashboard = async (req, res) => {
+    const docId = req.docId;
+    try {
+        const appointments = await Appointment.find({ docId }).sort({ createdAt: -1 });
+
+        // calculating the doctor's earnings
+        let earnings = 0;
+        appointments.map(app => {
+            if (app.isCompleted || app.payment) {
+                earnings += app.amount;
+            }
+        });
+
+        // getting the doctor's patients
+        let patients = [];
+        appointments.map(app => {
+            if (!patients.includes(app.userId)) {
+                patients.push(app.userId);
+            }
+        });
+
+        // dashboard data
+        const dashData = {
+            earnings,
+            appointments: appointments.length,
+            patients: patients.length,
+            latestAppointments: appointments.slice(0, 5),
+        };
+
+        res.json({ dashData, success: true }).status(200);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message, success: false });
+    }
+};
+
 export {
     changeAvailability,
     getDoctorsData,
     doctorLogin,
     getMyAppointments,
     completeAppointment,
-    cancelAppointment
+    cancelAppointment,
+    updateDoctorProfile,
+    docDashboard,
+    getDocProfile
 };

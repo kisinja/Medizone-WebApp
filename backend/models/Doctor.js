@@ -14,6 +14,10 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        default: '0000000'
+    },
     speciality: {
         type: String,
         required: true
@@ -44,7 +48,7 @@ const doctorSchema = new mongoose.Schema({
     },
     available: {
         type: Boolean,
-        default:true
+        default: true
     },
     slotsBooked: {
         type: Object,

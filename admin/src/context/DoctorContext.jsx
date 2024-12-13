@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createContext } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -12,13 +12,14 @@ export const DoctorContextProvider = ({ children }) => {
     const [dToken, setDToken] = useState(
         localStorage.getItem('dToken') || ""
     );
-    const [loggedInDoctor, setLoggedInDoctor] = useState(
-        JSON.parse(localStorage.getItem('currentDoctor')) || {}
-    );
+    const [loggedInDoctor, setLoggedInDoctor] = useState(null);
     const [appointments, setAppointments] = useState([]);
     const [appLoading, setAppLoading] = useState(true);
     const [cancelLoading, setCancelLoading] = useState(false);
     const [completeLoading, setCompleteLoading] = useState(false);
+    const [dashData, setDashData] = useState({});
+    const [dashLoading, setDashLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(true);
 
     const getAppointments = async () => {
         try {
@@ -50,6 +51,7 @@ export const DoctorContextProvider = ({ children }) => {
             });
             if (data.success) {
                 toast.success(data.message);
+                getAppointments();
             } else {
                 toast.error(data.message);
             }
@@ -71,6 +73,7 @@ export const DoctorContextProvider = ({ children }) => {
             });
             if (data.success) {
                 toast.success(data.message);
+                getAppointments();
             } else {
                 toast.error(data.message);
             }
@@ -81,6 +84,49 @@ export const DoctorContextProvider = ({ children }) => {
             setCancelLoading(false);
         }
     };
+
+    const getDashData = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/doctor/dashboard`, {
+                headers: {
+                    "Authorization": `Bearer ${dToken}`
+                },
+            });
+            if (data.success) {
+                setDashData(data.dashData);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setDashLoading(false);
+        }
+    };
+
+    const getDocProfile = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/doctor/profile`, {
+                headers: {
+                    "Authorization": `Bearer ${dToken}`
+                }
+            });
+            if (data.success) {
+                setLoggedInDoctor(data.doctor);
+                console.log(data);
+            } else { toast.error(data.message); }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setProfileLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getDocProfile();
+    }, []);
 
     const value = {
         backendUrl,
@@ -94,7 +140,13 @@ export const DoctorContextProvider = ({ children }) => {
         cancelAppointment,
         completeAppointment,
         cancelLoading,
-        completeLoading
+        completeLoading,
+        getDashData,
+        dashLoading,
+        dashData,
+        setDashData,
+        getDocProfile,
+        profileLoading
     };
 
     return (

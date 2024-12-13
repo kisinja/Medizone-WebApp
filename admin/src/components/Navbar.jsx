@@ -40,7 +40,7 @@ const Navbar = () => {
                         {
                             dToken && (
                                 <div className="flex gap-4 items-center">
-                                    <img src={loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
+                                    <img src={loggedInDoctor && loggedInDoctor.image} alt="" className="w-10 h-10 rounded-full object-cover" />
 
                                 </div>
                             )

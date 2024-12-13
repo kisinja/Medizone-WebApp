@@ -80,7 +80,7 @@ const Dashboard = () => {
                                 ) : (
                                     <img
                                         src={icon}
-                                        className="w-10  rounded-full"
+                                        className="w-10  rounded-full cursor-pointer"
                                         alt="Cancel Icon"
                                         onClick={() => cancelAppointment(app._id)}
                                     />
