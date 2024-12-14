@@ -11,8 +11,10 @@ const BlogDetails = () => {
     const [blog, setBlog] = useState(null);
     const [relatedBlogs, setRelatedBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [content, setContent] = useState('');
+    const [subLoading, setSubLoading] = useState(false);
 
-    const { backendUrl, token } = useContext(AppContext);
+    const { backendUrl, token, comments, commentsLoading, getBlogComments } = useContext(AppContext);
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -25,6 +27,9 @@ const BlogDetails = () => {
                 if (data.success) {
                     setBlog(data.blog);
                     setRelatedBlogs(data.relatedBlogs);
+
+                    // Fetch comments for the blog
+                    getBlogComments(id);
                 } else {
                     toast.error(data.message);
                 }
@@ -38,7 +43,43 @@ const BlogDetails = () => {
         fetchBlog();
     }, [id, backendUrl, token]);
 
-    if (loading) return <Loader text="Fetching blog..." />;
+    if (loading) {
+        return <Loader text="Fetching blog..." />;
+    } else if (commentsLoading) {
+        return <Loader text="Fetching comments..." />;
+    }
+
+    const handleCommentSubmit = async (blogId) => {
+
+        setSubLoading(true);
+
+        if (!content) {
+            toast.error('Comment content is required!');
+            setSubLoading(false);
+            return;
+        }
+
+        try {
+            const { data } = await axios.post(`${backendUrl}/api/comments`, { blogId, content }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (data.success) {
+                toast.success(data.message);
+                console.log(data);
+                setContent('');
+                getBlogComments(blogId);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setSubLoading(false);
+        }
+    };
 
     const pageUrl = `${window.location.origin}/blogs/${id}`;
 
@@ -58,7 +99,7 @@ const BlogDetails = () => {
                 <link rel="canonical" href={pageUrl} />
             </Helmet>
 
-            <section className="bg-gray-100 min-h-screen">
+            <section className="bg-gray-100 min-h-screen px-8">
                 <div className="container mx-auto py-12">
                     {/* Blog Header */}
                     <div className="text-center">
@@ -96,35 +137,105 @@ const BlogDetails = () => {
 
                         {/* Related Blogs Section */}
                         <div className="space-y-6">
-                            <h2 className="text-3xl font-bold">Related Blogs</h2>
-                            {relatedBlogs.map((related) => (
-                                <Link
-                                    to={`/blogs/${related._id}`}
-                                    key={related._id}
-                                    className="block bg-white shadow-lg rounded-lg hover:shadow-xl transition"
-                                >
-                                    <div className="grid grid-cols-3">
-                                        <img
-                                            src={related.imageUrls[0] || '/default-blog.jpg'}
-                                            alt={related.title}
-                                            className="rounded-l-lg object-cover h-32 w-full"
-                                            width="200" // Example width
-                                            height="128" // Example height
-                                        />
-                                        <div className="col-span-2 p-4">
-                                            <h3 className="text-lg font-semibold">{related.title}</h3>
-                                            <p className="text-gray-600 line-clamp-2">
-                                                {related.content}
-                                            </p>
+                            <h2 className="text-xl font-semibold">Related Blogs</h2>
+
+                            {relatedBlogs.length === 0 ? (
+                                <p className='text-gray-500'>No related blogs found!</p>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {relatedBlogs.map((blog) => (
+                                        <div
+                                            key={blog._id}
+                                            className="bg-white shadow-lg rounded-lg p-6"
+                                        >
+                                            <Link to={`/blogs/${blog._id}`}>
+                                                <img
+                                                    src={blog.imageUrls[0] || '/default-blog.jpg'}
+                                                    alt={blog.title}
+                                                    className="rounded-lg object-cover h-40 w-full"
+                                                    width="300" // Example width
+                                                    height="160" // Example height
+                                                />
+                                            </Link>
+                                            <div className="mt-4">
+                                                <Link to={`/blogs/${blog._id}`}>
+                                                    <h3 className="text-xl font-semibold hover:underline">
+                                                        {blog.title}
+                                                    </h3>
+                                                </Link>
+                                                <p className="text-gray-600">
+                                                    {blog.author} ·{' '}
+                                                    {new Date(blog.createdAt).toLocaleDateString()}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    ))}
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+
+                    {/* Comment Section */}
+                    <div className="mt-12 py-12">
+                        <h2 className="text-3xl font-bold mb-6">Comments</h2>
+                        <div className="bg-white shadow-lg rounded-lg p-6">
+                            {/* Comment Form (to be implemented later) */}
+                            <div className="mb-6">
+                                <textarea
+                                    placeholder="Add a comment..."
+                                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+                                    rows="4"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                ></textarea>
+                                <button
+                                    className="mt-4 bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                                    type="submit"
+                                    onClick={() => handleCommentSubmit(blog._id)}
+                                    disabled={subLoading}
+                                >
+                                    {subLoading ? 'Submitting...' : 'Submit'}
+                                </button>
+                            </div>
+
+                            {/* Display Comments (placeholder for now) */}
+                            <div className="space-y-4">
+
+                                {
+                                    comments.length === 0 ? (
+                                        <p className="text-gray-500">No comments for this blog found!</p>
+                                    ) : (
+                                        <>
+                                            {
+                                                comments.slice(0, 3).map(comm => (
+                                                    <div className="flex items-start space-x-4" key={comm._id}>
+                                                        <div className="">
+                                                            <img src={comm.userId.image} alt=""
+                                                                className='w-10 h-10 rounded-full'
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold">{comm.userId.name}</p>
+                                                            <p className="text-gray-600">{comm.content}</p>
+                                                            {/* Comment time */}
+                                                            <p className="text-gray-400 text-sm">
+                                                                {new Date(comm.createdAt).toLocaleDateString()} . {new Date(comm.createdAt).toLocaleTimeString()}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </>
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
         </>
+
     );
 };
 

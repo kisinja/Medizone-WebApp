@@ -19,6 +19,30 @@ const AppContextProvider = (props) => {
     const [blogs, setBlogs] = useState([]);
     const [blogsLoading, setBlogsLoading] = useState(true);
 
+    const [comments, setComments] = useState([]);
+    const [commentsLoading, setCommentsLoading] = useState(true);
+
+    const getBlogComments = async (blogId) => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/comments/${blogId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (data.success) {
+                setComments(data.comments);
+                console.log(data.comments);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        } finally {
+            setCommentsLoading(false);
+        }
+    };
+
     const getAllBlogs = async () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/blogs`, {
@@ -28,7 +52,6 @@ const AppContextProvider = (props) => {
             });
             if (data.success) {
                 setBlogs(data.blogs);
-                console.log(blogs);
             } else {
                 toast.error(data.message);
             }
@@ -101,7 +124,10 @@ const AppContextProvider = (props) => {
         loadUserProfile,
         blogs,
         blogsLoading,
-        getAllBlogs
+        getAllBlogs,
+        comments,
+        commentsLoading,
+        getBlogComments
     };
 
     return (

@@ -22,21 +22,26 @@ const DoctorProfile = () => {
         try {
             const formData = new FormData();
             formData.append("fees", loggedInDoctor.fees);
-            formData.append("address", JSON.stringify(loggedInDoctor.address));
             formData.append("phone", loggedInDoctor.phone);
             formData.append("available", loggedInDoctor.available);
 
-            if (loggedInDoctor.imageFile) {
+            // Convert address to a JSON string before appending
+            if (loggedInDoctor.address) {
+                formData.append("address", JSON.stringify(loggedInDoctor.address));
+            }
+
+            // Append the image file if it exists
+            if (loggedInDoctor.image) {
                 formData.append("image", loggedInDoctor.image);
             }
 
-            const { data } = await axios.post(
+            const { data } = await axios.put(
                 `${backendUrl}/api/doctor/profile/update`,
                 formData,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${dToken}`,
+                        Authorization: `Bearer ${dToken}`, // Allow axios to set the proper Content-Type
                     },
                 }
             );
@@ -44,17 +49,17 @@ const DoctorProfile = () => {
             if (data.success) {
                 toast.success(data.message);
                 setIsEdit(false);
-                setLoggedInDoctor((prev) => ({ ...prev, ...data.updatedProfile }));
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
             console.error(error);
-            toast.error("Failed to update profile.");
+            toast.error(error.message || "An error occurred");
         } finally {
             setLoading(false);
         }
     };
+
 
     if (loading) {
         return <Loader text="Updating Profile..." />;
@@ -197,11 +202,10 @@ const DoctorProfile = () => {
                                 />
                             ) : (
                                 <p
-                                    className={`${
-                                        loggedInDoctor.available
-                                            ? "text-green-500"
-                                            : "text-red-400"
-                                    } font-medium`}
+                                    className={`${loggedInDoctor.available
+                                        ? "text-green-500"
+                                        : "text-red-400"
+                                        } font-medium`}
                                 >
                                     {loggedInDoctor.available ? "Available" : "Not Available"}
                                 </p>

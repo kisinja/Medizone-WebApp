@@ -10,7 +10,7 @@ router.post('/login', doctorLogin);
 router.get('/my-appointments', authDoctor, getMyAppointments);
 router.post('/cancel-appointment', authDoctor, cancelAppointment);
 router.post('/complete-appointment', authDoctor, completeAppointment);
-router.post('/profile/update', authDoctor, updateDoctorProfile);
+router.put('/profile/update', authDoctor, updateDoctorProfile);
 router.get('/dashboard', authDoctor, docDashboard);
 router.get('/profile', authDoctor, getDocProfile);
 

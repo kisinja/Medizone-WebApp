@@ -1,5 +1,6 @@
 import Comment from "../models/Comment.js";
 import Blog from "../models/Blog.js";
+import User from "../models/User.js";
 
 // @desc    Add a comment to a blog
 // @route   POST /api/comments
@@ -36,6 +37,7 @@ const addComment = async (req, res) => {
 const getCommentsByBlogId = async (req, res) => {
 
     const { blogId } = req.params;
+    const userId = req.user;
 
     try {
 
@@ -44,7 +46,10 @@ const getCommentsByBlogId = async (req, res) => {
             return res.status(404).json({ success: false, message: "Blog not found!" });
         }
 
-        const comments = await Comment.find({ blogId });
+        // populate the comments with user details
+        const comments = await Comment.find({ blogId })
+            .populate("userId", "name image");
+
         res.status(200).json({ comments, success: true });
     } catch (error) {
         console.log(error.message);
